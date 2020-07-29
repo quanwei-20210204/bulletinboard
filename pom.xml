@@ -9,10 +9,10 @@
 		<version>2.3.1.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.sap.cc</groupId>
-	<artifactId>spring-boot-skeleton</artifactId>
+	<groupId>com.sap.cc.bulletinboard.ads</groupId>
+	<artifactId>bulletinboard-ads</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-boot-skeleton</name>
+	<name>bulletinboard-ads</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>

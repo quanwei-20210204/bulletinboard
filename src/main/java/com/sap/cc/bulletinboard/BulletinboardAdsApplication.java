@@ -1,13 +1,13 @@
-package com.sap.cc.springbootskeleton;
+package com.sap.cc.bulletinboard;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringBootSkeletonApplication {
+public class BulletinboardAdsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootSkeletonApplication.class, args);
+		SpringApplication.run(BulletinboardAdsApplication.class, args);
 	}
 
 }
