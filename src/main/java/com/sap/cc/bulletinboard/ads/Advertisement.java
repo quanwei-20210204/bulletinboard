@@ -4,6 +4,7 @@ public class Advertisement {
 	private Long id;
 
 	private String title;
+	private String contact;
 
 	public Advertisement() {
 	}
@@ -26,5 +27,13 @@ public class Advertisement {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
 	}
 }

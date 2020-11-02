@@ -14,8 +14,8 @@ public class InMemoryAdvertisementStorageTest {
 
 	private InMemoryAdvertisementStorage adStorage = new InMemoryAdvertisementStorage();
 
-	private final Advertisement AD_BIKE = createAdvertisementWithTitle("Bike for Sale");
-	private final Advertisement AD_PAN = createAdvertisementWithTitle("Lightly used pan");
+	private final Advertisement AD_BIKE = createAdvertisementWithTitleAndContact("Bike for Sale", "Bike-sellers");
+	private final Advertisement AD_PAN = createAdvertisementWithTitleAndContact("Lightly used pan", "Second-hand Pans");
 
 	@BeforeEach
 	public void beforeEach() {
@@ -33,6 +33,7 @@ public class InMemoryAdvertisementStorageTest {
 		Advertisement returnedAdvertisement = adStorage.saveAdvertisement(AD_BIKE);
 
 		assertThat(returnedAdvertisement.getTitle(), is(AD_BIKE.getTitle()));
+		assertThat(returnedAdvertisement.getContact(), is(AD_BIKE.getContact()));
 		assertThat(returnedAdvertisement.getId(), is(1L));
 	}
 
@@ -43,6 +44,7 @@ public class InMemoryAdvertisementStorageTest {
 		Advertisement returnedAdvertisement = adStorage.saveAdvertisement(AD_PAN);
 
 		assertThat(returnedAdvertisement.getTitle(), is(AD_PAN.getTitle()));
+		assertThat(returnedAdvertisement.getContact(), is(AD_PAN.getContact()));
 		assertThat(returnedAdvertisement.getId(), is(2L));
 	}
 
@@ -64,6 +66,7 @@ public class InMemoryAdvertisementStorageTest {
 		assertThat(returnedAdvertisement.isPresent(), is(true));
 		assertThat(returnedAdvertisement.get().getId(), is(1L));
 		assertThat(returnedAdvertisement.get().getTitle(), is(AD_BIKE.getTitle()));
+		assertThat(returnedAdvertisement.get().getContact(), is(AD_BIKE.getContact()));
 
 	}
 
@@ -96,6 +99,7 @@ public class InMemoryAdvertisementStorageTest {
 		List<Advertisement> returnedAdvertisements = adStorage.retrieveAllAdvertisements();
 		assertThat(returnedAdvertisements.size(), is(1));
 		assertThat(returnedAdvertisements.iterator().next().getTitle(), is(AD_BIKE.getTitle()));
+		assertThat(returnedAdvertisements.iterator().next().getContact(), is(AD_BIKE.getContact()));
 		assertThat(returnedAdvertisements.iterator().next().getId(), is(1L));
 
 		adStorage.saveAdvertisement(AD_PAN);
@@ -120,6 +124,7 @@ public class InMemoryAdvertisementStorageTest {
 
 		assertThat(returnedAdvertisements.size(), is(1));
 		assertThat(returnedAdvertisements.iterator().next().getTitle(), is(AD_PAN.getTitle()));
+		assertThat(returnedAdvertisements.iterator().next().getContact(), is(AD_PAN.getContact()));
 		assertThat(returnedAdvertisements.iterator().next().getId(), is(2L));
 
 	}
@@ -139,9 +144,10 @@ public class InMemoryAdvertisementStorageTest {
 		assertThat(returnedAdvertisements.size(), is(0));
 	}
 
-	private Advertisement createAdvertisementWithTitle(String title) {
+	private Advertisement createAdvertisementWithTitleAndContact(String title, String contact) {
 		Advertisement ad = new Advertisement();
 		ad.setTitle(title);
+		ad.setContact(contact);
 		return ad;
 	}
 
