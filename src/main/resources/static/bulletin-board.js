@@ -2,7 +2,6 @@
 import {html, useEffect, useState} from 'https://unpkg.com/htm@3.1.0/preact/standalone.module.js';
 
 import DisplayAdOnBoard from './components/display/displayAdOnBoard.js';
-import dataLoad from './utils/dataLoad.js';
 import getAll from './components/display/getAll.js';
 import AddButton from './components/create/addButton.js';
 import DeleteButton from './components/delete/deleteButton.js';
@@ -22,10 +21,7 @@ export default function BulletinBoard( {view} ) {
         getAll(ads, setAds);
         setAdChanged(false);
     }, [newAd, adChanged]);
-    useEffect( () => {
-        
-        dataLoad();
-    }, [])
+
     return html`
         <div class="container">
             <div class='row row-col-auto' >
