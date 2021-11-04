@@ -35,8 +35,9 @@ export default function CreateAd({ view, setNewAd, addMessage } ) {
                 <div class="card-body">
                     ${view === 'api' ?
                         html`<div class="card-title" >Create ad</div>` 
-                        : html`<input class="card-title" style="width: 8rem" type='text' value=${title} placeholder="add title!" onChange=${(e) => { setTitle(e.target.value) }} ></input>`
+                        : html``
                     }
+                    <input class="ad-input" type='text' value=${title} placeholder="add title!" onChange=${(e) => {setTitle(e.target.value)}} ></input>
                     <input class="ad-input" type='text' value=${contact} placeholder="add contact" onChange=${(e) => { setContact(e.target.value) }} ></input>
                     <span class=${view === 'api' ? '' : 'badge bg-danger rounded-pill'} >
                         <input class="ad-input" type='text' value=${price} placeholder="add price" onChange=${(e) => { setPrice(e.target.value) }} ></input>
