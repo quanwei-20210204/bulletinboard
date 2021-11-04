@@ -5,6 +5,12 @@ public class Advertisement {
 
 	private String title;
 	private String contact;
+	private String price;
+
+	@Override
+	public String toString() {
+		return "Advertisement [id=" + id + ", title=" + title + ", contact=" + contact + ", price=" + price + "]";
+	}
 
 	public Advertisement() {
 	}
@@ -36,4 +42,13 @@ public class Advertisement {
 	public void setContact(String contact) {
 		this.contact = contact;
 	}
+
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}
+
 }
