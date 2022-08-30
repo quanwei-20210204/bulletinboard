@@ -1,11 +1,13 @@
 package com.sap.cc.bulletinboard.ads;
 
+import java.math.BigDecimal;
+
 public class Advertisement {
     private Long id;
 
     private String title;
     private String contact;
-    private double price;
+    private BigDecimal price;
     private String currency;
 
     public String getCurrency() {
@@ -53,11 +55,11 @@ public class Advertisement {
         this.contact = contact;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
