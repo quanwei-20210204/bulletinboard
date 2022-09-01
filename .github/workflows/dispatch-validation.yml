@@ -1,4 +1,4 @@
- name: Remote Dispatch
+name: Remote Dispatch
 
 on:
   push:
