@@ -3,6 +3,7 @@ package com.sap.cc.bulletinboard.ads;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,10 +13,12 @@ import org.junit.jupiter.api.Test;
 
 public class InMemoryAdvertisementStorageTest {
 
-	private InMemoryAdvertisementStorage adStorage = new InMemoryAdvertisementStorage();
+	private final InMemoryAdvertisementStorage adStorage = new InMemoryAdvertisementStorage();
 
-	private final Advertisement AD_BIKE = createAdvertisementWithTitleAndContact("Bike for Sale", "Bike-sellers");
-	private final Advertisement AD_PAN = createAdvertisementWithTitleAndContact("Lightly used pan", "Second-hand Pans");
+	private final Advertisement AD_BIKE = createAdvertisementWithTitleContactPriceCurrency(
+			"Bike for Sale", "Bike-sellers", BigDecimal.ONE, "USD");
+	private final Advertisement AD_PAN = createAdvertisementWithTitleContactPriceCurrency(
+			"Lightly used pan", "Second-hand Pans", BigDecimal.TEN, "EUR");
 
 	@BeforeEach
 	public void beforeEach() {
@@ -35,6 +38,8 @@ public class InMemoryAdvertisementStorageTest {
 		assertThat(returnedAdvertisement.getTitle(), is(AD_BIKE.getTitle()));
 		assertThat(returnedAdvertisement.getContact(), is(AD_BIKE.getContact()));
 		assertThat(returnedAdvertisement.getId(), is(1L));
+		assertThat(returnedAdvertisement.getPrice(), is(BigDecimal.ONE));
+		assertThat(returnedAdvertisement.getCurrency(), is("USD"));
 	}
 
 	@Test
@@ -46,6 +51,8 @@ public class InMemoryAdvertisementStorageTest {
 		assertThat(returnedAdvertisement.getTitle(), is(AD_PAN.getTitle()));
 		assertThat(returnedAdvertisement.getContact(), is(AD_PAN.getContact()));
 		assertThat(returnedAdvertisement.getId(), is(2L));
+		assertThat(returnedAdvertisement.getPrice(), is(BigDecimal.TEN));
+		assertThat(returnedAdvertisement.getCurrency(), is("EUR"));
 	}
 
 	@Test
@@ -67,6 +74,8 @@ public class InMemoryAdvertisementStorageTest {
 		assertThat(returnedAdvertisement.get().getId(), is(1L));
 		assertThat(returnedAdvertisement.get().getTitle(), is(AD_BIKE.getTitle()));
 		assertThat(returnedAdvertisement.get().getContact(), is(AD_BIKE.getContact()));
+		assertThat(returnedAdvertisement.get().getPrice(), is(BigDecimal.ONE));
+		assertThat(returnedAdvertisement.get().getCurrency(), is("USD"));
 
 	}
 
@@ -81,6 +90,21 @@ public class InMemoryAdvertisementStorageTest {
 		adStorage.saveAdvertisement(returnedAdvertisement);
 
 		assertThat(returnedAdvertisement.getTitle(), is(newTitle));
+		assertThat(returnedAdvertisement.getId(), is(1L));
+
+	}
+
+	@Test
+	public void testUpdatePriceOfExistingAdvertisement() {
+		Advertisement returnedAdvertisement = adStorage.saveAdvertisement(AD_BIKE);
+		assertThat(returnedAdvertisement.getId(), is(1L));
+
+		final BigDecimal newPrice = BigDecimal.valueOf(2L);
+		returnedAdvertisement.setPrice(newPrice);
+
+		adStorage.saveAdvertisement(returnedAdvertisement);
+
+		assertThat(returnedAdvertisement.getPrice(), is(newPrice));
 		assertThat(returnedAdvertisement.getId(), is(1L));
 
 	}
@@ -101,6 +125,8 @@ public class InMemoryAdvertisementStorageTest {
 		assertThat(returnedAdvertisements.iterator().next().getTitle(), is(AD_BIKE.getTitle()));
 		assertThat(returnedAdvertisements.iterator().next().getContact(), is(AD_BIKE.getContact()));
 		assertThat(returnedAdvertisements.iterator().next().getId(), is(1L));
+		assertThat(returnedAdvertisements.iterator().next().getPrice(), is(BigDecimal.ONE));
+		assertThat(returnedAdvertisements.iterator().next().getCurrency(), is("USD"));
 
 		adStorage.saveAdvertisement(AD_PAN);
 
@@ -144,10 +170,13 @@ public class InMemoryAdvertisementStorageTest {
 		assertThat(returnedAdvertisements.size(), is(0));
 	}
 
-	private Advertisement createAdvertisementWithTitleAndContact(String title, String contact) {
+	private Advertisement createAdvertisementWithTitleContactPriceCurrency(
+			String title, String contact, BigDecimal price, String currency) {
 		Advertisement ad = new Advertisement();
 		ad.setTitle(title);
 		ad.setContact(contact);
+		ad.setPrice(price);
+		ad.setCurrency(currency);
 		return ad;
 	}
 

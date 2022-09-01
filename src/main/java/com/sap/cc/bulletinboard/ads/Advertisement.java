@@ -1,54 +1,66 @@
 package com.sap.cc.bulletinboard.ads;
 
+import java.math.BigDecimal;
+
 public class Advertisement {
-	private Long id;
+    private Long id;
 
-	private String title;
-	private String contact;
-	private String price;
+    private String title;
+    private String contact;
+    private BigDecimal price;
+    private String currency;
 
-	@Override
-	public String toString() {
-		return "Advertisement [id=" + id + ", title=" + title + ", contact=" + contact + ", price=" + price + "]";
-	}
+    public String getCurrency() {
+        return currency;
+    }
 
-	public Advertisement() {
-	}
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
 
-	public Advertisement(String title) {
-		this.title = title;
-	}
 
-	public String getTitle() {
-		return title;
-	}
+    @Override
+    public String toString() {
+        return "Advertisement [id=" + id + ", title=" + title + ", contact=" + contact + ", price=" + price + ", currency=" + currency + "]";
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public Advertisement() {
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Advertisement(String title) {
+        this.title = title;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public String getContact() {
-		return contact;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getPrice() {
-		return price;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setPrice(String price) {
-		this.price = price;
-	}
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 
 }
