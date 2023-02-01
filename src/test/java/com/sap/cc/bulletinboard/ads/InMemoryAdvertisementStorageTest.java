@@ -1,5 +1,6 @@
 package com.sap.cc.bulletinboard.ads;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -122,16 +123,27 @@ public class InMemoryAdvertisementStorageTest {
 
 		List<Advertisement> returnedAdvertisements = adStorage.retrieveAllAdvertisements();
 		assertThat(returnedAdvertisements.size(), is(1));
-		assertThat(returnedAdvertisements.iterator().next().getTitle(), is(AD_BIKE.getTitle()));
-		assertThat(returnedAdvertisements.iterator().next().getContact(), is(AD_BIKE.getContact()));
-		assertThat(returnedAdvertisements.iterator().next().getId(), is(1L));
-		assertThat(returnedAdvertisements.iterator().next().getPrice(), is(BigDecimal.ONE));
-		assertThat(returnedAdvertisements.iterator().next().getCurrency(), is("USD"));
+		Advertisement ad = returnedAdvertisements.get(0);
+		assertThat(ad.getTitle(), is(AD_BIKE.getTitle()));
+		assertThat(ad.getContact(), is(AD_BIKE.getContact()));
+		assertThat(ad.getId(), is(1L));
+		assertThat(ad.getPrice(), is(BigDecimal.ONE));
+		assertThat(ad.getCurrency(), is("USD"));
 
 		adStorage.saveAdvertisement(AD_PAN);
 
 		returnedAdvertisements = adStorage.retrieveAllAdvertisements();
 		assertThat(returnedAdvertisements.size(), is(2));
+
+	}
+
+	@Test
+	public void testRetrieveAdvertisementByIdThrowsExceptionForNegativeValue() {
+
+		assertThatThrownBy(() ->
+		{
+		adStorage.retrieveAdvertisementById(-1L);
+		}).isInstanceOf(IllegalArgumentException.class);
 
 	}
 
@@ -149,9 +161,10 @@ public class InMemoryAdvertisementStorageTest {
 		returnedAdvertisements = adStorage.retrieveAllAdvertisements();
 
 		assertThat(returnedAdvertisements.size(), is(1));
-		assertThat(returnedAdvertisements.iterator().next().getTitle(), is(AD_PAN.getTitle()));
-		assertThat(returnedAdvertisements.iterator().next().getContact(), is(AD_PAN.getContact()));
-		assertThat(returnedAdvertisements.iterator().next().getId(), is(2L));
+		Advertisement ad = returnedAdvertisements.get(0);
+		assertThat(ad.getTitle(), is(AD_PAN.getTitle()));
+		assertThat(ad.getContact(), is(AD_PAN.getContact()));
+		assertThat(ad.getId(), is(2L));
 
 	}
 

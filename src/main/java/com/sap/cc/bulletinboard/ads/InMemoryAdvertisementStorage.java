@@ -26,6 +26,9 @@ public class InMemoryAdvertisementStorage {
 	}
 
 	public Optional<Advertisement> retrieveAdvertisementById(Long id) {
+		if(id <= 0) {
+			throw new IllegalArgumentException("Negative ids are not allowed");
+		}
 		return Optional.ofNullable(advertisements.get(id));
 	}
 
