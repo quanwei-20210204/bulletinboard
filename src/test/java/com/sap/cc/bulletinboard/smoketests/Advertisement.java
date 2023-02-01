@@ -1,7 +1,6 @@
 package com.sap.cc.bulletinboard.smoketests;
 
 public class Advertisement {
-
     private Long id;
 
     private String title;
