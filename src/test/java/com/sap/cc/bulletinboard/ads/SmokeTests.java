@@ -1,4 +1,5 @@
-package com.sap.cc.bulletinboard.smoketests;
+package com.sap.cc.bulletinboard.ads;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +32,7 @@ public class SmokeTests {
 
     @Test
     public void shouldCreatAnAd() {
-        Advertisement ad = new Advertisement("Piece of Pi(e)", "Gauss", "60");
+        Advertisement ad = createAdvertisementWithTitleContactPrice("Piece of Pi(e)", "Gauss", "60");
         Advertisement createdAd = createAd(ad);
         assertThat(createdAd.getTitle()).isEqualTo("Piece of Pi(e)");
         assertThat(createdAd.getContact()).isEqualTo("Gauss");
@@ -40,14 +41,14 @@ public class SmokeTests {
 
     @Test
     public void shouldReturnNotAllowedForWrongPostEndpoint() {
-        Advertisement ad = new Advertisement("Piece of Pi(e)", "Gauss", "60");
+        Advertisement ad = createAdvertisementWithTitleContactPrice("Piece of Pi(e)", "Gauss", "60");
         post(basePath() + "/99999999", ad)
                 .expectStatus().isEqualTo(405);
     }
 
     @Test
     public void shouldReturnTheCreatedAd() {
-        Advertisement ad = new Advertisement("Piece of Pi(e)", "Gauss", "60");
+        Advertisement ad = createAdvertisementWithTitleContactPrice("Piece of Pi(e)", "Gauss", "60");
         Long id = createAd(ad).getId();
 
         EntityExchangeResult<Advertisement> getSingleResponse = get(basePath() + "/" + id)
@@ -59,8 +60,8 @@ public class SmokeTests {
         assertThat(responseBody.getId()).isEqualTo(id);
         assertThat(responseBody.getTitle()).isEqualTo("Piece of Pi(e)");
         assertThat(responseBody.getContact()).isEqualTo("Gauss");
-        String createdPrice = responseBody.getPrice();
-        assertThat(new BigDecimal("60").compareTo(new BigDecimal(createdPrice))).isZero();
+        BigDecimal createdPrice = responseBody.getPrice();
+        assertThat(new BigDecimal("60").compareTo(createdPrice)).isZero();
     }
 
     @Test
@@ -71,7 +72,7 @@ public class SmokeTests {
 
     @Test
     public void shouldReturnAListOfAdsIncludingCreatedAd() {
-        Advertisement ad = new Advertisement("Piece of Pi(e)", "Gauss", "60");
+        Advertisement ad = createAdvertisementWithTitleContactPrice("Piece of Pi(e)", "Gauss", "60");
         Long id = createAd(ad).getId();
 
         EntityExchangeResult<List<Advertisement>> getAllResponse = get(basePath())
@@ -87,7 +88,16 @@ public class SmokeTests {
         assertThat(ad.getId()).isEqualTo(id);
         assertThat(ad.getTitle()).isEqualTo("Piece of Pi(e)");
         assertThat(ad.getContact()).isEqualTo("Gauss");
-        assertThat(new BigDecimal(ad.getPrice()).compareTo(new BigDecimal("60"))).isZero();
+        assertThat(ad.getPrice().compareTo(new BigDecimal("60"))).isZero();
+    }
+
+    private Advertisement createAdvertisementWithTitleContactPrice(
+            String title, String contact, String price) {
+        Advertisement ad = new Advertisement();
+        ad.setTitle(title);
+        ad.setContact(contact);
+        ad.setPrice(new BigDecimal(price));
+        return ad;
     }
 
     private Advertisement createAd(Advertisement ad) {
