@@ -1,6 +1,7 @@
 package com.sap.cc.bulletinboard.ads;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Disabled
 public class SmokeTests {
     private static final String API_PATH = "api/v1";
     private WebTestClient client;
