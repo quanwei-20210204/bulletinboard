@@ -10,4 +10,5 @@ class BulletinboardAdsApplicationTests {
 	void contextLoads() {
 	}
 
+
 }

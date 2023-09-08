@@ -1,14 +1,26 @@
 package com.sap.cc.bulletinboard.ads;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Advertisement {
+@Entity
+public class Advertisement implements Serializable {
+    @Id
+    @GeneratedValue
     private Long id;
 
     private String title;
     private String contact;
     private BigDecimal price;
     private String currency;
+    private Double averageContactRating;
+
+    public Advertisement(String title, String contact) {
+        this.title = title;
+        this.contact = contact;
+    }
+
 
     public String getCurrency() {
         return currency;
@@ -21,7 +33,14 @@ public class Advertisement {
 
     @Override
     public String toString() {
-        return "Advertisement [id=" + id + ", title=" + title + ", contact=" + contact + ", price=" + price + ", currency=" + currency + "]";
+        return "Advertisement{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", contact='" + contact + '\'' +
+                ", price=" + price +
+                ", currency='" + currency + '\'' +
+                ", averageContactRating=" + averageContactRating +
+                '}';
     }
 
     public Advertisement() {
@@ -29,6 +48,7 @@ public class Advertisement {
 
     public Advertisement(String title) {
         this.title = title;
+        this.averageContactRating=0d;//default value
     }
 
     public String getTitle() {
@@ -62,5 +82,12 @@ public class Advertisement {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
+    public void setAverageContactRating(Double averageContactRating) {
+        this.averageContactRating = averageContactRating;
+    }
+    public Double getAverageContactRating() {
+        return averageContactRating;
+    }
+
 
 }

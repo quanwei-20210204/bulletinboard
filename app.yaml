@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bulletinboard-ads
+spec:
+  selector:
+    matchLabels:
+      app: bulletinboard-ads
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bulletinboard-ads
+    spec:
+      containers:
+        - name: app
+          image: cc-ms-k8s-training.common.repositories.cloud.sap/bulletinboard-ads-i075523:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: storage
+              mountPath: /var/lib/postgresql/data
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://bulletinboard-ads-db/postgres
+            - name: SPRING_DATASOURCE_USERNAME
+              value: postgres
+            - name: SPRING_JPA_DATABASE-PLATFORM_HIBERNATE_DIALECT
+              value: PostgreSQLDialect
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+      imagePullSecrets:
+        - name: regcred
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: database
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bulletinboard-ads
+spec:
+  selector:
+    app: bulletinboard-ads
+  ports:
+    - name: bulletinboard-ads
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: istio
+  name: bulletinboard-ads
+spec:
+  rules:
+    - host: bulletinboard-ads.c-1da4821.kyma.ondemand.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: bulletinboard-ads
+                port:
+                  number: 8080
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - bulletinboard-ads.c-1da4821.kyma.ondemand.com
+      secretName: kyma-gateway-certs
