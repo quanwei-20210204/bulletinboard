@@ -30,9 +30,12 @@ public class AdvertisementController  {
     @Autowired
     ReviewsServiceClient reviewsServiceClient;
     @GetMapping
-    public ResponseEntity<List<Advertisement>> getAllAdvertisement(){
+    public ResponseEntity<List<Advertisement>> getAllAdvertisement() throws JsonProcessingException {
         List<Advertisement> advertisements = advertisementService.retrieveAllAdvertisements();
-//        logger.info();
+        for (Advertisement advertisement:advertisements
+             ) {
+            advertisement=reviewsServiceClient.getAverageContactRatingFromReviews(advertisement);
+        }
         return ResponseEntity.ok(advertisements);
     }
 
@@ -72,6 +75,11 @@ public class AdvertisementController  {
     public ResponseEntity<Advertisement> addAdvertisement(@RequestBody Advertisement ad){
         Advertisement advertisement = advertisementService.saveAdvertisement(ad);
 
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String endpointPath = request.getRequestURI();
+        MDC.put("endpoint",endpointPath);
+        logger.trace("Post advertisement, id:{}, title:{}",advertisement.getId(),advertisement.getTitle());
+        MDC.clear();
         return new ResponseEntity<>(advertisement, HttpStatus.CREATED);
     }
     @PostMapping("/0")
